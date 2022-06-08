@@ -49,7 +49,11 @@ public class FuncionarioController {
     	// Recupera os cargos cadastrados no banco de dados para que sejam carregados no JComboBox Cargo.
 		return new FuncionarioDao().recuperaCargos();		
     }
-    
+
+	public List<Funcionario> consultaFuncionarios() {
+		return new FuncionarioDao().consultaFuncionarios();
+	}
+
     public String getExcecao() {
     	// Retorna a exceção lançada ao recuperar os cargos (ao abrir a tela "Cadastro de Funcionário").
     	return new FuncionarioDao().getExcecao();

@@ -11,8 +11,11 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
 import br.edu.ifsp.view.cargo.CargoCadastro;
+import br.edu.ifsp.view.cargo.CargoConsulta;
 import br.edu.ifsp.view.departamento.DepartamentoCadastro;
+import br.edu.ifsp.view.departamento.DepartamentoConsulta;
 import br.edu.ifsp.view.funcionario.FuncionarioCadastro;
+import br.edu.ifsp.view.funcionario.FuncionarioConsulta;
 
 @SuppressWarnings("serial")
 public class Index extends JFrame {
@@ -71,19 +74,35 @@ public class Index extends JFrame {
 			public void actionPerformed(ActionEvent e) { miCadCargoAction(); }
 		});
 
+		// Declaração do processador de evento referente ao clique no item Consultar do submenu Cargos.
+		miCadCargo[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { miConsCargoAction(); }
+		});
+
 
 		// Declaração do processador de evento referente ao clique no item Cadastrar do submenu Departamentos.
 		miCadDepto[0].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { miCadDepartamentoAction(); }
 		});
 
+		// Declaração do processador de evento referente ao clique no item Consultar do submenu Departamentos.
+		miCadDepto[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { miConsDepartamentoAction(); }
+		});
 
 
 		// Declaração do processador de evento referente ao clique no item Cadastrar do submenu Funcionários.
 		miCadFunc[0].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { miCadFuncAction(); }
 		});
-		
+
+
+		// Declaração do processador de evento referente ao clique no item Consultar do submenu Funcionários.
+		miCadFunc[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { miConsFuncAction(); }
+		});
+
+
 		// Declaração do processador de evento referente ao clique no item Sair.
 		miCadSair.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) { miCadSairAction(); }
@@ -99,6 +118,13 @@ public class Index extends JFrame {
 			@Override
 			public void run(){ new CargoCadastro().setVisible(true); }});
 	}
+	private void miConsCargoAction() { // Método acionado pelo clique no item Consultar do submenu Cargo.
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			// Após executar esta linha, são chamados os métodos getRowCount e getColumnClass da classe FuncionarioModeloTabela.
+			public void run(){ new CargoConsulta().setVisible(true); }});
+	}
+
 
 
 	private void miCadDepartamentoAction() { // Método acionado pelo clique no item Cadastrar do submenu Departamento.
@@ -106,13 +132,29 @@ public class Index extends JFrame {
 			@Override
 			public void run(){ new DepartamentoCadastro().setVisible(true); }});
 	}
-	
+
+	private void miConsDepartamentoAction() { // Método acionado pelo clique no item Consultar do submenu Departamento.
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			// Após executar esta linha, são chamados os métodos getRowCount e getColumnClass da classe FuncionarioModeloTabela.
+			public void run(){ new DepartamentoConsulta().setVisible(true); }});
+	}
+
+
 	private void miCadFuncAction() { // Método acionado pelo clique no item Cadastrar do submenu Funcionários.		
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override
 			public void run(){ new FuncionarioCadastro().setVisible(true); }});
 	}
-	
+
+	private void miConsFuncAction() { // Método acionado pelo clique no item Consultar do submenu Funcionários.
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			// Após executar esta linha, são chamados os métodos getRowCount e getColumnClass da classe FuncionarioModeloTabela.
+			public void run(){ new FuncionarioConsulta().setVisible(true); }});
+	}
+
+
 	public static void main(String[] args) { // Início da aplicação.
 		SwingUtilities.invokeLater(new Runnable(){
 			@Override

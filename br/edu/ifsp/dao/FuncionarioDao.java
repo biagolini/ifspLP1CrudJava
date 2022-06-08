@@ -56,6 +56,52 @@ public class FuncionarioDao extends GenericDao {
         }
         return cargos; // Retorna o ArrayList de objetos Cargo.
     }
+
+
+    public List<Funcionario> consultaFuncionarios() {
+        Funcionario funcionario;
+        Cargo cargo;
+        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+        instrucaoSql = "SELECT * FROM FUNCIONARIO";
+
+        try {
+            excecao = ConnectionDatabase.conectaBd(); // Abre a conexão com o banco de dados.
+            if (excecao == null) {
+                // Obtém os dados de conexão com o banco de dados e prepara a instrução SQL.
+                comando = ConnectionDatabase.getConexaoBd().prepareStatement(instrucaoSql);
+
+                // Executa a instrução SQL e retorna os dados ao objeto ResultSet.
+                registros = comando.executeQuery();
+
+                if (registros.next()) { // Se for retornado pelo menos um registro.
+                    registros.beforeFirst(); // Retorna o cursor para antes do 1º registro.
+                    while (registros.next()) {
+                        // Atribui os dados do funcionário ao objeto Funcionario por meio dos métodos set e
+                        // adiciona este objeto ao ArrayList funcionarios.
+                        funcionario = new Funcionario();
+                        funcionario.setId(registros.getInt("Id"));
+                        funcionario.setNome(registros.getString("Nome"));
+                        funcionario.setSexo(registros.getString("Sexo").charAt(0));
+                        funcionario.setSalario(registros.getBigDecimal("Salario")); // Obtém o salário armazenado no registro.
+                        funcionario.setPlanoSaude(registros.getBoolean("PlanoSaude"));
+                        // Atribui o id do cargo ao objeto Cargo por meio do método set.
+                        cargo = new Cargo();
+                        cargo.setId(registros.getInt("IdCargo"));
+                        funcionario.setCargo(cargo);
+                        funcionarios.add(funcionario);
+                    }
+                }
+                registros.close(); // Libera os recursos usados pelo objeto ResultSet.
+                comando.close(); // Libera os recursos usados pelo objeto PreparedStatement.
+                // Libera os recursos usados pelo objeto Connection e fecha a conexão com o banco de dados.
+                ConnectionDatabase.getConexaoBd().close();
+            }
+        } catch (Exception e) {
+            excecao = "Tipo de Exceção: " + e.getClass().getSimpleName() + "\nMensagem: " + e.getMessage();
+            funcionarios = null; // Caso ocorra qualquer exceção.
+        }
+        return funcionarios; // Retorna o ArrayList de objetos Funcionário.
+    }
     
     // Esse método é necessário, porque os métodos "recuperaCargos" e "consultaFuncionarios" retornam List<> e não String.
 	public String getExcecao() {

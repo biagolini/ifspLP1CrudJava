@@ -51,6 +51,46 @@ public class CargoDao extends GenericDao {
         }
         return departamentos;
     }
+
+
+    public List<Cargo> consultaCargo() {
+        Cargo cargo;
+        Departamento departamento;
+
+        List<Cargo> cargos = new ArrayList<Cargo>();
+        instrucaoSql = "SELECT * FROM CARGO";
+
+        try {
+            excecao = ConnectionDatabase.conectaBd();
+
+            if (excecao == null) {
+                comando = ConnectionDatabase.getConexaoBd().prepareStatement(instrucaoSql);
+                registros = comando.executeQuery();
+
+                if (registros.next()) {
+                    registros.beforeFirst();
+                    while (registros.next()) {
+                        cargo = new Cargo();
+                        cargo.setId(registros.getInt("Id"));
+                        cargo.setDescricao(registros.getString("Descricao"));
+                        departamento = new Departamento();
+                        departamento.setId(registros.getInt("IdDepto"));
+                        cargo.setDepartamento(departamento);
+                        cargos.add(cargo);
+                    }
+                }
+                registros.close();
+                comando.close();
+                ConnectionDatabase.getConexaoBd().close();
+            }
+        } catch (Exception e) {
+            excecao = "Tipo de Exceção: " + e.getClass().getSimpleName() + "\nMensagem: " + e.getMessage();
+            cargos = null;
+        }
+        return cargos;
+    }
+
+
     public String getExcecao() {
         return excecao;
     }

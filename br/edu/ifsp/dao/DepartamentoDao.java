@@ -83,8 +83,44 @@ public class DepartamentoDao extends GenericDao {
         }
         return funcionarios;
     }
+    public List<Departamento> consultaDepartamentos() {
+        Departamento departamento;
+        Funcionario funcionario;
+
+        List<Departamento> departamentos = new ArrayList<Departamento>();
+        instrucaoSql = "SELECT * FROM DEPARTAMENTO";
+
+        try {
+            excecao = ConnectionDatabase.conectaBd();
+
+            if (excecao == null) {
+                comando = ConnectionDatabase.getConexaoBd().prepareStatement(instrucaoSql);
+                registros = comando.executeQuery();
+
+                if (registros.next()) {
+                    registros.beforeFirst();
+                    while (registros.next()) {
+                        departamento = new Departamento();
+                        departamento.setId(registros.getInt("Id"));
+                        departamento.setNomeDepto(registros.getString("NomeDepto"));
+                        funcionario = new Funcionario();
+                        funcionario.setId(registros.getInt("idFuncGerente"));
+                        departamento.setGerente(funcionario);
+                        departamentos.add(departamento);
+                    }
+                }
+                registros.close();
+                comando.close();
+                ConnectionDatabase.getConexaoBd().close();
+            }
+        } catch (Exception e) {
+            excecao = "Tipo de Exceção: " + e.getClass().getSimpleName() + "\nMensagem: " + e.getMessage();
+            departamentos = null;
+        }
+        return departamentos;
+    }
+
     public String getExcecao() {
         return excecao;
     }
-
-}
+    }

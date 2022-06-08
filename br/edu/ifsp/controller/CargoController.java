@@ -33,9 +33,11 @@ public class CargoController {
         erros = CargoValidacao.validaCargo(cargo);
     }
 
-    public List<Departamento>  recuperaDepartamentos() {
+    public List<Departamento> recuperaDepartamentos() {
         return new CargoDao().recuperaDepartamentos();
     }
+
+    public List<Cargo> recuperaCargos(){ return  new CargoDao().consultaCargo();}
 
     public String getExcecao() {
         return new CargoDao().getExcecao();
